@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bitcoin Whitepaper Interactive</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #f7931a;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: scale(1.02);
+        }
+
+        .card-header {
+            padding: 20px;
+            border-bottom: 1px solid #f7931a;
+        }
+
+        .card-title {
+            font-size: 24px;
+            color: black;
+            font-weight: bold;
+        }
+
+        .card-content {
+            padding: 20px;
+        }
+
+        .section {
+            cursor: pointer;
+            padding: 15px;
+            margin: 10px 0;
+            border: 2px solid #f7931a;
+            border-radius: 8px;
+            background: white;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .section-content {
+            display: none;
+            padding: 15px 0;
+            color: black;
+        }
+
+        .blockchain {
+            display: flex;
+            overflow-x: auto;
+            padding: 20px 0;
+            gap: 20px;
+        }
+
+        .block {
+            flex: 0 0 200px;
+            padding: 15px;
+            border: 2px solid #f7931a;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .block:hover {
+            transform: scale(1.05);
+            background: #fff5e6;
+        }
+
+        .block.active {
+            background: #fff5e6;
+            border-color: #f7931a;
+        }
+
+        .timeline {
+            position: relative;
+            height: 60px;
+            margin: 20px 0;
+        }
+
+        .timeline-track {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: #ffe5cc;
+            transform: translateY(-50%);
+        }
+
+        .timeline-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #f7931a;
+            transition: width 0.3s ease;
+        }
+
+        .timeline-nodes {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            transform: translateY(-50%);
+        }
+
+        .timeline-node {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #ffe5cc;
+            border: 2px solid #f7931a;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-node:hover {
+            transform: scale(1.2);
+        }
+
+        .timeline-node.active {
+            background: #f7931a;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Bitcoin: A Peer-to-Peer Electronic Cash System</div>
+            </div>
+            <div class="card-content">
+                <p>By Satoshi Nakamoto</p>
+            </div>
+        </div>
+
+        <div class="sections">
+            <div class="section" data-section="intro">
+                <div class="section-header">
+                    <h3>Introduction</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    Bitcoin solves the double-spending problem in digital cash without requiring a trusted third party. It uses a peer-to-peer network and proof-of-work to maintain a public transaction history.
+                </div>
+            </div>
+
+            <div class="section" data-section="transactions">
+                <div class="section-header">
+                    <h3>Digital Signatures</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    Each coin is a chain of digital signatures. Owners transfer coins by digitally signing the previous transaction and the next owner's public key.
+                </div>
+            </div>
+
+            <div class="section" data-section="network">
+                <div class="section-header">
+                    <h3>P2P Network</h3>
+                    <span class="arrow">▼</span>
+                </div>
+                <div class="section-content">
+                    Transactions are broadcast to all nodes. Nodes collect transactions into blocks and compete to solve a proof-of-work puzzle. The longest chain represents consensus.
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Blockchain Explorer</div>
+            </div>
+            <div class="card-content">
+                <div class="blockchain">
+                    <div class="block" data-block="0">
+                        <h4>Block 0</h4>
+                        <p>Prev: 0000</p>
+                        <p>Hash: 000A</p>
+                        <p>Tx: Genesis Block</p>
+                    </div>
+                    <div class="block" data-block="1">
+                        <h4>Block 1</h4>
+                        <p>Prev: 000A</p>
+                        <p>Hash: 000B</p>
+                        <p>Tx: Alice pays Bob</p>
+                    </div>
+                    <div class="block" data-block="2">
+                        <h4>Block 2</h4>
+                        <p>Prev: 000B</p>
+                        <p>Hash: 000C</p>
+                        <p>Tx: Bob pays Charlie</p>
+                    </div>
+                    <div class="block" data-block="3">
+                        <h4>Block 3</h4>
+                        <p>Prev: 000C</p>
+                        <p>Hash: 000D</p>
+                        <p>Tx: Charlie pays Dave</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Block Timeline</div>
+            </div>
+            <div class="card-content">
+                <div class="timeline">
+                    <div class="timeline-track">
+                        <div class="timeline-progress"></div>
+                    </div>
+                    <div class="timeline-nodes">
+                        <div class="timeline-node active" data-block="0">0</div>
+                        <div class="timeline-node" data-block="1">1</div>
+                        <div class="timeline-node" data-block="2">2</div>
+                        <div class="timeline-node" data-block="3">3</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Section toggle
+            $('.section').on('click', function() {
+                const content = $(this).find('.section-content');
+                const arrow = $(this).find('.arrow');
+                content.slideToggle(300);
+                arrow.text(content.is(':visible') ? '▼' : '▶');
+            });
+
+            // Section hover
+            $('.section').hover(
+                function() {
+                    $(this).find('.section-content').slideDown(300);
+                },
+                function() {
+                    if (!$(this).hasClass('active')) {
+                        $(this).find('.section-content').slideUp(300);
+                    }
+                }
+            );
+
+            // Block selection
+            let currentBlock = 0;
+
+            function updateBlockState(blockNum) {
+                currentBlock = blockNum;
+                $('.block').removeClass('active');
+                $(`.block[data-block="${blockNum}"]`).addClass('active');
+                
+                $('.timeline-node').removeClass('active');
+                $(`.timeline-node[data-block="${blockNum}"]`).addClass('active');
+                
+                const progress = ((blockNum + 1) / 4) * 100;
+                $('.timeline-progress').css('width', `${progress}%`);
+            }
+
+            $('.block').click(function() {
+                const blockNum = $(this).data('block');
+                updateBlockState(blockNum);
+            });
+
+            $('.timeline-node').click(function() {
+                const blockNum = $(this).data('block');
+                updateBlockState(blockNum);
+            });
+
+            // Initialize first block as active
+            updateBlockState(0);
+        });
+    </script>
+</body>
+</html>
